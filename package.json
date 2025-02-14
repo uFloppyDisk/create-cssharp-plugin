@@ -12,7 +12,9 @@
     "dist",
     "templates"
   ],
-  "bin": "./dist/index.js",
+  "bin": {
+    "create-cssharp-plugin": "dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uFloppyDisk/create-cssharp-plugin.git"
