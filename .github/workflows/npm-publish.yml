@@ -1,0 +1,37 @@
+name: Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  npm-publish:
+    name: npm-publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: 'Automatic version bump'
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commit-message: 'chore: bump package version to {{version}}'
+
+      - name: Publish to NPM
+        uses: JS-DevTools/npm-publish@v3
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          tag: $NEW_TAG
