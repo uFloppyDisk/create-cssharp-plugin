@@ -27,7 +27,7 @@
     "dotnet"
   ],
   "author": "Pawel Bartusiak <pawel@floppyd.sk>",
-  "license": "GPLv3",
+  "license": "AGPL-3.0-only",
   "bugs": {
     "url": "https://github.com/uFloppyDisk/create-cssharp-plugin/issues"
   },
