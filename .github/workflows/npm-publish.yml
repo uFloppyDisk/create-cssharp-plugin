@@ -10,40 +10,31 @@ jobs:
     name: npm-publish
     runs-on: ubuntu-latest
     steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+
+      - name: Echo
+        run: git log --oneline --decorate --graph
+
       - name: Checkout
         uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+        if: ${{ steps.release.outputs.release_created }}
 
       - run: npm ci
+        if: ${{ steps.release.outputs.release_created }}
       - run: npm run build
+        if: ${{ steps.release.outputs.release_created }}
 
-      - name: Automatic version bump
-        id: version-bump
-        uses: 'phips28/gh-action-bump-version@master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          commit-message: 'chore: bump package version to {{version}}'
-
-      - name: Generate changelog
-        id: changelog
-        uses: janheinrichmerker/action-github-changelog-generator@v2.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        env:
-          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
-        with:
-          tag: ${{ env.NEW_TAG }}
-          name: Release ${{ env.NEW_TAG }}
-          body: ${{ steps.changelog.outputs.changelog }}
-
-      - name: Publish to NPM
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish to NPM
+      #   uses: JS-DevTools/npm-publish@v3
+      #   with:
+      #     token: ${{ secrets.NPM_TOKEN }}
+      #   if: ${{ steps.release.outputs.release_created }}
