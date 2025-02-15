@@ -35,8 +35,7 @@ jobs:
       - name: On to publishing to NPM!
         run: echo "true"
 
-      # - name: Publish to NPM
-      #   uses: JS-DevTools/npm-publish@v3
-      #   with:
-      #     token: ${{ secrets.NPM_TOKEN }}
-      #   if: ${{ steps.release.outputs.release_created }}
+      - name: Publish to NPM
+        uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
