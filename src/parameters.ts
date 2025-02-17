@@ -19,7 +19,7 @@ function validationBuilder(validations: Validation[]): Validation {
   }
 }
 
-function validateString(errorMsg: string): Validation {
+function validateNonEmptyString(errorMsg: string): Validation {
   return (answer) => {
     return typeof answer === 'string' && answer.trim().length > 0 ? true : errorMsg;
   }
@@ -37,7 +37,7 @@ export default <PromptObject[]>[
     name: 'containingDirectoryName',
     message: 'What do you want to name the project directory?',
     validate: validationBuilder([
-      validateString('Your project directory must have a name!'),
+      validateNonEmptyString('Your project directory must have a name!'),
       validatePathDoesNotExist(`A directory with that name already exists!`),
     ]),
   },
@@ -54,7 +54,7 @@ export default <PromptObject[]>[
     name: 'pluginName',
     message: 'What do you want to name your plugin?',
     initial: (_, values) => values.containingDirectoryName,
-    validate: validateString('Your plugin must have a name!'),
+    validate: validateNonEmptyString('Your plugin must have a name!'),
   },
   {
     type: 'text',
