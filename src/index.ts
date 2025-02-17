@@ -5,10 +5,10 @@ import fs from "fs";
 import path from "path";
 
 import prompts from "prompts";
-import parameters from "#src/parameters";
-import generatePluginFiles from "#src/generatePluginFiles";
-import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "#src/constants";
-import { error, renderGoodbye, renderMasthead, warn } from "#src/vanity";
+import parameters from "~/parameters";
+import generatePluginFiles from "~/generatePluginFiles";
+import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
+import { error, renderGoodbye, renderMasthead, warn } from "~/vanity";
 
 renderMasthead();
 
