@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import gradient from "gradient-string";
+import ora from "ora";
 
 const HEADER = `
   ____                  _            ____  _        _ _        ____  _
@@ -30,4 +31,14 @@ export function renderMasthead() {
 
 export function renderGoodbye() {
   print("👋", gradient.fruit("Goodbye!"));
+}
+
+export function createSpinner(message: string) {
+  return ora({
+    text: message,
+    spinner: {
+      frames: ['|', '-', '0'],
+      interval: 300
+    }
+  });
 }
