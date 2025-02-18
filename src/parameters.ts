@@ -25,7 +25,7 @@ export function validateNonEmptyString(errorMsg: string): Validation {
   }
 }
 
-function validatePathDoesNotExist(errorMsg: string, base: string = TARGET_BASE): Validation {
+export function validatePathDoesNotExist(errorMsg: string, base: string = TARGET_BASE): Validation {
   return (answer) => {
     return !existsSync(path.join(base, answer)) ? true : errorMsg;
   }
