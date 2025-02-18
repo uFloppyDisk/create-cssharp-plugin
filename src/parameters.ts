@@ -1,10 +1,10 @@
 import { existsSync } from "fs";
 import path from "path";
 import { PromptObject } from "prompts";
-import { TARGET_BASE } from "./constants";
+import { TARGET_BASE } from "~/constants";
 
-type Validation<T extends string = string, P = PromptObject<T>["validate"]> =
-  (answer: Parameters<P>[0]) => ReturnType<P>;
+type ValidationClosure<T> = (input: T) => boolean | string;
+type Validation<T extends string = string> = ValidationClosure<T>;
 
 function validationBuilder(validations: Validation[]): Validation {
   return (answer: string) => {
@@ -82,7 +82,9 @@ export default <PromptObject[]>[
     active: 'yes',
     inactive: 'no',
     onRender(kleur) {
+      //@ts-ignore
       if (this.firstRender) {
+        //@ts-ignore
         this.msg = `Setup plugin using dotnet? ${kleur.gray('(You must have the dotnet CLI installed and accessible via `dotnet`)')}`
       }
     }
