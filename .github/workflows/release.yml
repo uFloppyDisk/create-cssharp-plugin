@@ -14,9 +14,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+          cache: 'npm'
 
-      - run: npm ci
-      - run: npm run test
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test
 
   create-release:
     runs-on: ubuntu-latest
@@ -42,12 +45,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+          cache: 'npm'
 
-      - run: npm ci
-      - run: npm run build
-
-      - name: On to publishing to NPM!
-        run: echo "true"
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
 
       - name: Publish to NPM
         uses: JS-DevTools/npm-publish@v3
