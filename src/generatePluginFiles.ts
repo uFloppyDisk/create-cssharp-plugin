@@ -3,12 +3,12 @@ import fs from "fs";
 
 const ignoreFileNames = ['bin', 'obj'];
 
-function transformFileName(name: string, transforms: Transforms): string {
+export function transformFileName(name: string, transforms: Transforms): string {
   const parsedFile = path.parse(name);
   return (transforms[parsedFile.name] ?? parsedFile.name) + parsedFile.ext;
 }
 
-function transformFileContents(content: string, transforms?: Transforms): string {
+export function transformFileContents(content: string, transforms?: Transforms): string {
   if (!transforms) return content;
 
   for (const [key, value] of Object.entries(transforms)) {
