@@ -2,6 +2,20 @@ import { pathsToModuleNameMapper, type JestConfigWithTsJest } from 'ts-jest';
 
 import { compilerOptions } from "./tsconfig.json";
 
+const tsJestTransformOptions = {
+  diagnostics: {
+    ignoreCodes: [1343]
+  },
+  astTransformers: {
+    before: [
+      {
+        path: 'ts-jest-mock-import-meta',
+        options: { metaObjectReplacement: { url: `file://${__dirname}/` } }
+      }
+    ]
+  }
+};
+
 const config: JestConfigWithTsJest = {
   coverageProvider: "v8",
   preset: 'ts-jest',
@@ -11,7 +25,7 @@ const config: JestConfigWithTsJest = {
   modulePaths: ['<rootDir>'],
 
   transform: {
-    "^.+\\.[tj]sx?$": ["ts-jest", {}],
+    "^.+\\.[tj]sx?$": ["ts-jest", tsJestTransformOptions],
   },
 };
 
