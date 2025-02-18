@@ -19,7 +19,7 @@ function validationBuilder(validations: Validation[]): Validation {
   }
 }
 
-function validateNonEmptyString(errorMsg: string): Validation {
+export function validateNonEmptyString(errorMsg: string): Validation {
   return (answer) => {
     return typeof answer === 'string' && answer.trim().length > 0 ? true : errorMsg;
   }
