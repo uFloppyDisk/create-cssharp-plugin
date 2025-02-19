@@ -1,6 +1,8 @@
 import chalk from "chalk";
 import gradient from "gradient-string";
 
+import pkg from "package.json";
+
 const HEADER = `  ____                  _            ____  _        _ _        ____  _
  / ___|___  _   _ _ __ | |_ ___ _ __/ ___|| |_ _ __(_| | _____/ ___|| |__   __ _ _ __ _ __
 | |   / _ \\| | | | '_ \\| __/ _ | '__\\___ \\| __| '__| | |/ / _ \\___ \\| '_ \\ / _\` | '__| '_ \\
@@ -25,6 +27,10 @@ export function renderMasthead() {
     "white",
     "#f59e0b",
   ]).multiline(HEADER));
+}
+
+export function renderCliInfo() {
+  print('Using', chalk.bold(pkg.name), pkg.version);
 }
 
 export function renderGoodbye() {

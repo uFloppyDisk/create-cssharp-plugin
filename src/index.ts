@@ -8,9 +8,11 @@ import prompts from "prompts";
 import parameters from "~/parameters";
 import generatePluginFiles from "~/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
-import { error, renderGoodbye, renderMasthead, warn } from "~/vanity";
+import { error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
 
 renderMasthead();
+renderCliInfo();
+console.log();
 
 const generateProject = new Promise(async (resolve, reject) => {
   let cancelled = false;
