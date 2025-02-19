@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execSync } from "child_process";
+import { exec } from "child_process";
 import fs from "fs";
 import path from "path";
 
@@ -8,7 +8,7 @@ import prompts from "prompts";
 import parameters from "~/parameters";
 import generatePluginFiles from "~/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
-import { error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
+import { createSpinner, error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
 
 renderMasthead();
 renderCliInfo();
@@ -54,13 +54,30 @@ const generateProject = new Promise(async (resolve, reject) => {
     'dotnet new solution',
     'dotnet sln add src',
     'dotnet build',
-  ]
+  ];
 
   if (answers.setupUsingDotnetCli) {
     for (const command of dotnetCommands) {
-      console.time(command);
-      execSync(command, { cwd: targetPath });
-      console.timeEnd(command);
+      const startTime = performance.now();
+      const spinner = createSpinner(`Running '${command}'...`).start();
+
+      const doneOrError = await new Promise<string>((resolve, reject) => {
+        exec(command, { cwd: targetPath }).on('close', code => {
+          if (code === 0) return resolve('done');
+          return reject(`Could not run command '${command}'`);
+        });
+      }).catch(e => {
+        spinner.fail(`Command '${command}' failed!`);
+        return e;
+      });
+
+      if (doneOrError !== 'done') {
+        error(doneOrError);
+        return resolve(true);
+      }
+
+      const elapsed = Math.trunc(Math.abs(performance.now() - startTime));
+      spinner.succeed(`Ran '${command}' in ${elapsed}ms`);
     }
   }
 
