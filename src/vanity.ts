@@ -34,5 +34,12 @@ export function renderCliInfo() {
 }
 
 export function renderGoodbye() {
+  print();
+  print(gradient.fruit(`Thank you for using ${pkg.name}!`));
+  print(`If you find this plugin useful, please consider:`);
+  print(`  🌟 Giving ${pkg.name} a star on Github!`);
+  print("  ✏️", `Contribute to ${pkg.name} by making a pull request!`);
+  print(`Github: ${pkg.homepage.split("#")[0]}`);
+  print();
   print("👋", gradient.fruit("Goodbye!"));
 }
