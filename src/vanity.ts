@@ -4,8 +4,9 @@ import ora from "ora";
 
 const print = console.log;
 
-const HEADER = `
-  ____                  _            ____  _        _ _        ____  _
+import pkg from "package.json";
+
+const HEADER = `  ____                  _            ____  _        _ _        ____  _
  / ___|___  _   _ _ __ | |_ ___ _ __/ ___|| |_ _ __(_| | _____/ ___|| |__   __ _ _ __ _ __
 | |   / _ \\| | | | '_ \\| __/ _ | '__\\___ \\| __| '__| | |/ / _ \\___ \\| '_ \\ / _\` | '__| '_ \\
 | |__| (_) | |_| | | | | ||  __| |   ___) | |_| |  | |   |  __/___) | | | | (_| | |  | |_) |
@@ -63,7 +64,18 @@ export function renderMasthead() {
   ]).multiline(HEADER));
 }
 
+export function renderCliInfo() {
+  print('Using', chalk.bold(pkg.name), pkg.version);
+}
+
 export function renderGoodbye() {
+  print();
+  print(gradient.fruit(`Thank you for using ${pkg.name}!`));
+  print(`If you find this plugin useful, please consider:`);
+  print(`  🌟 Giving ${pkg.name} a star on Github!`);
+  print("  ✏️", `Contribute to ${pkg.name} by making a pull request!`);
+  print(`Github: ${pkg.homepage.split("#")[0]}`);
+  print();
   print("👋", gradient.fruit("Goodbye!"));
 }
 
