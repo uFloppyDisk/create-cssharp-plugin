@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.2.0...v0.2.1) (2025-02-21)
+
+
+### Bug Fixes
+
+* template .gitignore not packaged by npm; ([af8d681](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/af8d681dc80813b2dbbe975295bffabc550e734d))
+
 ## [0.2.0](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.1.0...v0.2.0) (2025-02-21)
 
 
