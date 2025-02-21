@@ -71,10 +71,12 @@ export function renderCliInfo() {
 export function renderGoodbye() {
   print();
   print(gradient.fruit(`Thank you for using ${pkg.name}!`));
-  print(`If you find this plugin useful, please consider:`);
-  print(`  🌟 Giving ${pkg.name} a star on Github!`);
-  print("  ✏️", `Contribute to ${pkg.name} by making a pull request!`);
-  print(`Github: ${pkg.homepage.split("#")[0]}`);
+  print(`If you find this CLI useful, please consider:`);
+  print(`🌟 Giving ${chalk.bold(pkg.name)} a star on Github!`);
+  print(`✏️  Contributing to ${chalk.bold(pkg.name)} by making a pull request! `);
+  print(`Did you have any problems using this CLI? Please consider:`);
+  print(`🪲 Submitting an issue on Github!`);
+  print(`Github: ${chalk.bold(pkg.homepage.split("#")[0])}`);
   print();
   print("👋", gradient.fruit("Goodbye!"));
 }
