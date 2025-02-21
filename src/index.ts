@@ -17,13 +17,15 @@ console.log();
 const generateProject = new Promise(async (resolve, reject) => {
   let cancelled = false;
   function onCancel() {
-    warn("Cancelled making a CounterStrike Sharp plugin.");
     cancelled = true;
     return false;
   }
 
   const answers = await prompts(parameters, { onCancel });
-  if (cancelled) return resolve(true);
+  if (cancelled) {
+    warn("Cancelled making a CounterStrikeSharp plugin.");
+    return resolve(true);
+  }
 
   console.time("Done in");
   const targetPath = path.join(TARGET_BASE, answers.containingDirectoryName);
