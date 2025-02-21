@@ -18,6 +18,26 @@ export function transformFileContents(content: string, transforms?: Transforms):
   return content;
 }
 
+// Source:
+// https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/scripts/init.js
+function renameOrOverwriteIfExistsGitignore(targetPath: string) {
+  const gitignoreExists = fs.existsSync(path.join(targetPath, 'gitignore'));
+  if (!gitignoreExists) return;
+
+  const dotgitignoreExists = fs.existsSync(path.join(targetPath, '.gitignore'));
+  if (dotgitignoreExists) {
+    console.log("Overwriting");
+    fs.unlinkSync(path.join(targetPath, '.gitignore'));
+  }
+
+  // Rename gitignore after the fact to prevent npm from renaming it to .npmignore
+  // See: https://github.com/npm/npm/issues/1862
+  fs.renameSync(
+    path.join(targetPath, 'gitignore'),
+    path.join(targetPath, '.gitignore'),
+  );
+}
+
 type Transforms = Record<string, string>;
 function generatePluginFiles(templatePath: string, targetPath: string, transforms?: Transforms) {
   const templateContentNames = fs.readdirSync(templatePath)
@@ -47,6 +67,8 @@ function generatePluginFiles(templatePath: string, targetPath: string, transform
     fs.mkdirSync(destPath);
     generatePluginFiles(originPath, destPath, transforms);
   }
+
+  renameOrOverwriteIfExistsGitignore(targetPath);
 }
 
 export default generatePluginFiles;
