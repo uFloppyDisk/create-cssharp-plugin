@@ -16,6 +16,24 @@
 - [ ] Opinionated project structure (directories for commands, hooks, etc.)
 - [ ] GitHub actions release workflow (build plugin and generate GH release with plugin artifacts attached)
 
+## Prerequisites
+<details>
+    <summary><b>NodeJS (v20 recommended)</b></summary>
+
+You can get NodeJS by going to their website and selecting your OS, node version, and package manager.\
+https://nodejs.org/en/download
+</details>
+<details>
+    <summary>dotnet CLI [optional]</summary>
+
+The `dotnet` CLI *should* come with .NET SDK.\
+**Install .NET SDK**\
+[Linux](https://learn.microsoft.com/en-us/dotnet/core/install/linux)
+\-
+[Windows](https://learn.microsoft.com/en-us/dotnet/core/install/windows)
+
+Learn more: https://learn.microsoft.com/en-us/dotnet/core/tools/
+</details>
 
 ## Installation
 
