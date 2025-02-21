@@ -112,3 +112,5 @@ npm run dev
 ```shell
 npx .
 ```
+When running the CLI this way, all plugin projects will be placed in the `.playground`
+directory to avoid mixing with the rest of your filesystem and this repo's files.
