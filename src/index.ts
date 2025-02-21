@@ -3,6 +3,7 @@
 import { exec } from "child_process";
 import fs from "fs";
 import path from "path";
+import pkg from "package.json";
 
 import prompts from "prompts";
 import parameters from "~/parameters";
@@ -44,6 +45,7 @@ const generateProject = new Promise(async (resolve, reject) => {
 
   const templatePath = path.join(TEMPLATE_BASE, 'standard-plugin');
   const transforms = {
+    "CLI_VERSION": pkg.version,
     "PLUGIN_NAME": pluginName,
     "PLUGIN_AUTHOR": answers.pluginAuthor,
     "PLUGIN_DESCRIPTION": answers.pluginDescription,
