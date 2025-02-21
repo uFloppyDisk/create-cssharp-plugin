@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.1.0...v0.2.0) (2025-02-21)
+
+
+### Features
+
+* add bug report CTA; ([571dc1d](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/571dc1d47ab1cd8319930b09708cddd84700fc3e))
+* add plugin template readme; ([9ebc440](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/9ebc4400f17f21bb1b02f90b1d53bc78f98225aa))
+
+
+### Bug Fixes
+
+* four-space indenting in .cs files; ([17266f5](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/17266f5cd4cd99f13d523e566aafd39c21e30ba4))
+
 ## [0.1.0](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/0.0.2...v0.1.0) (2025-02-19)
 
 
