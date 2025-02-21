@@ -1,0 +1,21 @@
+# Original and inspiration:
+# https://github.com/dotnet/roslyn/blob/e2d4e372f19c16f9b3dea06f7ca857ed5d42bc09/.editorconfig
+
+root = true
+
+[*]
+indent_style = space
+
+# Code files
+[*.{cs,csx}]
+indent_size = 4
+insert_final_newline = true
+charset = utf-8-bom
+
+# XML project files
+[*.{csproj}]
+indent_size = 2
+
+# XML config files
+[*.{props,targets,ruleset,config,nuspec,resx,vsixmanifest,vsct}]
+indent_size = 2
