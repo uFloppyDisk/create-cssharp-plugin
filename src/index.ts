@@ -29,14 +29,14 @@ const generateProject = new Promise(async (resolve, reject) => {
   }
 
   console.time("Done in");
-  const targetPath = path.join(TARGET_BASE, answers.containingDirectoryName);
+  const targetPath = path.resolve(TARGET_BASE, answers.containingDirectoryName);
 
   const pluginName = (() => {
     if (!answers.pluginSameName) {
       return answers.pluginName;
     }
 
-    return answers.containingDirectoryName;
+    return path.parse(answers.containingDirectoryName).base;
   })();
 
   if (fs.existsSync(targetPath)) {
@@ -52,6 +52,7 @@ const generateProject = new Promise(async (resolve, reject) => {
     "PLUGIN_VERSION": answers.pluginVersion,
   }
 
+  fs.mkdirSync(targetPath, { recursive: true });
   generatePluginFiles(templatePath, targetPath, transforms);
 
   const dotnetCommands = [

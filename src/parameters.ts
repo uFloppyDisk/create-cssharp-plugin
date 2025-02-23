@@ -25,6 +25,15 @@ export function validateNonEmptyString(errorMsg: string): Validation {
   }
 }
 
+export function validateStringIsNotPath(errorMsg: string): Validation {
+  return (answer: string) => {
+    const found = answer.match(/[\/\\\:]/);
+    if (!found) return true;
+
+    return found.length <= 0 ? true : errorMsg;
+  }
+}
+
 export function validatePathDoesNotExist(errorMsg: string, base: string = TARGET_BASE): Validation {
   return (answer) => {
     return !existsSync(path.join(base, answer)) ? true : errorMsg;
@@ -53,8 +62,11 @@ export default <PromptObject[]>[
     type: (_, values) => values.pluginSameName === false ? 'text' : null,
     name: 'pluginName',
     message: 'What do you want to name your plugin?',
-    initial: (_, values) => values.containingDirectoryName,
-    validate: validateNonEmptyString('Your plugin must have a name!'),
+    initial: (_, values) => path.parse(values.containingDirectoryName).base,
+    validate: validationBuilder([
+      validateNonEmptyString('Your plugin must have a name!'),
+      validateStringIsNotPath('Your plugin name cannot be a path!'),
+    ])
   },
   {
     type: 'text',

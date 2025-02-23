@@ -1,4 +1,4 @@
-import { validateNonEmptyString, validatePathDoesNotExist } from "~/parameters";
+import { validateNonEmptyString, validatePathDoesNotExist, validateStringIsNotPath } from "~/parameters";
 import { vol } from "memfs";
 import fs from "fs";
 
@@ -19,6 +19,22 @@ describe('validateNonEmptyString', () => {
     //@ts-expect-error
     expect(func(12345)).toBe(errorMsg);
     expect(func('')).toBe(errorMsg);
+  });
+});
+
+describe('validateStringIsNotPath', () => {
+  it('returns true on happy case', () => {
+    const func = validateStringIsNotPath('');
+
+    expect(func('string')).toBe(true);
+    expect(func('directory.with.dots')).toBe(true);
+  });
+
+  it('returns error message', () => {
+    const func = validateStringIsNotPath(errorMsg);
+
+    expect(func("this/is/a/path")).toBe(errorMsg);
+    expect(func("/etc/something")).toBe(errorMsg);
   });
 });
 
