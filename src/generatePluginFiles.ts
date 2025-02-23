@@ -26,7 +26,6 @@ function renameOrOverwriteIfExistsGitignore(targetPath: string) {
 
   const dotgitignoreExists = fs.existsSync(path.join(targetPath, '.gitignore'));
   if (dotgitignoreExists) {
-    console.log("Overwriting");
     fs.unlinkSync(path.join(targetPath, '.gitignore'));
   }
 
