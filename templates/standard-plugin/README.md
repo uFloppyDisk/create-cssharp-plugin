@@ -11,9 +11,9 @@ https://docs.cssharp.dev/
 ## Building for release
 Build your plugin using `dotnet` CLI:
 ```shell
-dotnet publish -c Release
+dotnet publish
 ```
-and find your plugin build at `./src/bin/Release/<dotnet_version>/publish`
+and find your plugin build at `./publish/PLUGIN_NAME`
 
 ## Template info
 By default, **create-cssharp-plugin** initializes your project with a reference to 
