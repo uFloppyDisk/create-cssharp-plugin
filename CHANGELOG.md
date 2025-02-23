@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.2.1...v0.3.0) (2025-02-23)
+
+
+### Features
+
+* allow paths in containing directory prompt; ([8fa744a](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/8fa744a0cf83f7ea940689ca8777a742ea936749))
+* build/publish to project-level directory; ([5efe0cf](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/5efe0cf1efbc9fe96371ee2a188062fe0192766e))
+
 ## [0.2.1](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.2.0...v0.2.1) (2025-02-21)
 
 
