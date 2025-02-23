@@ -8,12 +8,19 @@ PLUGIN_DESCRIPTION
 If you need help getting started with making a CounterStrikeSharp plugin, head over to the docs:\
 https://docs.cssharp.dev/
 
+## Building for development
+Build your plugin using `dotnet` CLI:
+```shell
+dotnet build
+```
+and find your plugin build at `./build/PLUGIN_NAME`
+
 ## Building for release
 Build your plugin using `dotnet` CLI:
 ```shell
 dotnet publish
 ```
-and find your plugin build at `./publish/PLUGIN_NAME`
+and find your plugin published at `./publish/PLUGIN_NAME`
 
 ## Template info
 By default, **create-cssharp-plugin** initializes your project with a reference to 
