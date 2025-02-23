@@ -5,6 +5,8 @@
     <RootNamespace>PLUGIN_NAME</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <OutDir>../build/$(MSBuildProjectName)</OutDir>
+    <PublishDir>../publish/$(MSBuildProjectName)</PublishDir>
   </PropertyGroup>
 
   <ItemGroup>
