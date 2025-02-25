@@ -50,7 +50,7 @@ and click `Keep Remote Directory up to Date`.
 2. Select the plugin build directory containing your DLLs.
 3. Select the plugin destination.
 (`csgo/addons/counterstrikesharp/plugins/PLUGIN_NAME`)
-4. Click `start`
+4. Click `Start`
 
 > [!IMPORTANT]
 > **For WSL users:**
