@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.3.0...v0.3.1) (2025-02-25)
+
+
+### Bug Fixes
+
+* ignore project-level build directories; ([bcfe972](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/bcfe972c8cca1ee96e19f993abe18a3360c2b751))
+
 ## [0.3.0](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.2.1...v0.3.0) (2025-02-23)
 
 
