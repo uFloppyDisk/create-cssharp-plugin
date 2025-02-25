@@ -8,12 +8,18 @@ PLUGIN_DESCRIPTION
 If you need help getting started with making a CounterStrikeSharp plugin, head over to the docs:\
 https://docs.cssharp.dev/
 
-## Building for development
+## Building during development
 Build your plugin using `dotnet` CLI:
 ```shell
 dotnet build
 ```
+or
+```shell
+dotnet watch build --project src/PLUGIN_NAME.csproj
+```
 and find your plugin build at `./build/PLUGIN_NAME`
+
+Optionally, [setup automatic live hot-reloading on your remote server](/docs/auto-live-hot-reloading.md)
 
 ## Building for release
 Build your plugin using `dotnet` CLI:
