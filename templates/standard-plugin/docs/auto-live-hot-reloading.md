@@ -69,7 +69,7 @@ ___
 Run the following watch command in place of the one mentioned in 
 [Step 1](#1-build-plugin-on-change) to build to a directory in your Windows filesystem
 ```shell
-dotnet watch build --project src/PLUGIN_NAME.csproj -- --property:OutDir=/mnt/<drive-letter>/some/path/PLUGIN_NAME`
+dotnet watch build --project src/PLUGIN_NAME.csproj --property:OutDir=/mnt/<drive-letter>/some/path/PLUGIN_NAME`
 ```
 and have [WinSCP in Step 2](#2-setup-automatic-uploads) watch that path instead.
 
