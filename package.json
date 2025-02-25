@@ -1,6 +1,6 @@
 {
   "name": "create-cssharp-plugin",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "./src/index.ts",
   "scripts": {
     "test": "jest",
