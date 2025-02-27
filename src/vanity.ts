@@ -14,7 +14,7 @@ const HEADER = `  ____                  _            ____  _        _ _        _
                                                                                      |_|
 `;
 
-const spinnerFrames = ((): any[] => {
+const spinnerFrames = ((): string[] => {
   const symbols = "⠁⠂⠄⡀⡈⡐⡠⣀⣁⣂⣄⣌⣔⣤⣥⣦⣮⣶⣷⣿⡿⠿⢟⠟⡛⠛⠫⢋⠋⠍⡉⠉⠑⠡⢁".split("");
   const chunkLength = Math.round(Math.sqrt(symbols.length));
 
