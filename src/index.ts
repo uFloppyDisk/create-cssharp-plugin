@@ -42,7 +42,7 @@ async function runShellCommands(commands: string[], targetPath: string) {
 }
 
 
-const generateProject = new Promise(async (resolve, reject) => {
+const generateProject = new Promise<void>(async (resolve, reject) => {
   let cancelled = false;
   function onCancel() {
     cancelled = true;
@@ -52,7 +52,7 @@ const generateProject = new Promise(async (resolve, reject) => {
   const answers = await prompts(parameters, { onCancel });
   if (cancelled) {
     warn("Cancelled making a CounterStrikeSharp plugin.");
-    return resolve(true);
+    return resolve();
   }
 
   console.time("Done in");
@@ -84,7 +84,7 @@ const generateProject = new Promise(async (resolve, reject) => {
   }
 
   console.timeEnd("Done in");
-  return resolve(true);
+  return resolve();
 });
 
 generateProject
