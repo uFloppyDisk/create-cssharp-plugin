@@ -27,6 +27,9 @@ const config: JestConfigWithTsJest = {
   transform: {
     "^.+\\.[tj]sx?$": ["ts-jest", tsJestTransformOptions],
   },
+  collectCoverageFrom: [
+    "src/**"
+  ],
 };
 
 export default config;
