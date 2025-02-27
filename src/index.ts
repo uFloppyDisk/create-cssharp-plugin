@@ -15,6 +15,33 @@ renderMasthead();
 renderCliInfo();
 console.log();
 
+const dotnetCommands = [
+  'dotnet new solution',
+  'dotnet sln add src',
+  'dotnet build',
+];
+
+async function runShellCommands(commands: string[], targetPath: string) {
+  for (const command of commands) {
+    const startTime = performance.now();
+    const spinner = createSpinner(`Running '${command}'...`).start();
+
+    await new Promise<string>((resolve, reject) => {
+      exec(command, { cwd: targetPath }).on('close', code => {
+        if (code === 0) return resolve('done');
+        return reject(`Could not run command '${command}'`);
+      });
+    }).catch(e => {
+      spinner.fail(`Command '${command}' failed!`);
+      throw new Error(e);
+    });
+
+    const elapsed = Math.trunc(Math.abs(performance.now() - startTime));
+    spinner.succeed(`Ran '${command}' in ${elapsed}ms`);
+  }
+}
+
+
 const generateProject = new Promise(async (resolve, reject) => {
   let cancelled = false;
   function onCancel() {
@@ -48,34 +75,11 @@ const generateProject = new Promise(async (resolve, reject) => {
   fs.mkdirSync(targetPath, { recursive: true });
   generatePluginFiles(templatePath, targetPath, transforms);
 
-  const dotnetCommands = [
-    'dotnet new solution',
-    'dotnet sln add src',
-    'dotnet build',
-  ];
-
   if (answers.setupUsingDotnetCli) {
-    for (const command of dotnetCommands) {
-      const startTime = performance.now();
-      const spinner = createSpinner(`Running '${command}'...`).start();
-
-      const doneOrError = await new Promise<string>((resolve, reject) => {
-        exec(command, { cwd: targetPath }).on('close', code => {
-          if (code === 0) return resolve('done');
-          return reject(`Could not run command '${command}'`);
-        });
-      }).catch(e => {
-        spinner.fail(`Command '${command}' failed!`);
-        return e;
-      });
-
-      if (doneOrError !== 'done') {
-        error(doneOrError);
-        return resolve(true);
-      }
-
-      const elapsed = Math.trunc(Math.abs(performance.now() - startTime));
-      spinner.succeed(`Ran '${command}' in ${elapsed}ms`);
+    try {
+      await runShellCommands(dotnetCommands, targetPath)
+    } catch (e) {
+      return reject(e);
     }
   }
 
@@ -85,7 +89,7 @@ const generateProject = new Promise(async (resolve, reject) => {
 
 generateProject
   .catch(err => {
-    error(err.message)
+    err instanceof Error ? error(err.message) : error(err);
     if (!IS_PRODUCTION) console.error(err);
   })
   .finally(() => renderGoodbye());
