@@ -10,6 +10,7 @@ import parameters from "~/parameters";
 import generatePluginFiles from "~/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
 import { createSpinner, error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
+import { promiseWithSpinner } from "./helpers";
 
 renderMasthead();
 renderCliInfo();
@@ -21,26 +22,24 @@ const dotnetCommands = [
   'dotnet build',
 ];
 
-async function runShellCommands(commands: string[], targetPath: string) {
-  for (const command of commands) {
-    const startTime = performance.now();
-    const spinner = createSpinner(`Running '${command}'...`).start();
+async function execShellCommand(command: string, targetPath: string) {
+  const startTime = performance.now();
+  const spinner = createSpinner(`Running '${command}'...`).start();
 
-    await new Promise<string>((resolve, reject) => {
-      exec(command, { cwd: targetPath }).on('close', code => {
-        if (code === 0) return resolve('done');
-        return reject(`Could not run command '${command}'`);
-      });
-    }).catch(e => {
-      spinner.fail(`Command '${command}' failed!`);
-      throw new Error(e);
+  await promiseWithSpinner((resolve, reject) => {
+    exec(command, { cwd: targetPath }).on('close', code => {
+      if (code === 0) {
+        const elapsed = Math.trunc(Math.abs(performance.now() - startTime));
+        return resolve(`Ran '${command}' in ${elapsed}ms`);
+      }
+
+      return reject(`Could not run command '${command}'`);
     });
-
-    const elapsed = Math.trunc(Math.abs(performance.now() - startTime));
-    spinner.succeed(`Ran '${command}' in ${elapsed}ms`);
-  }
+  }, spinner, { persistOnFail: false })
+    .catch(e => {
+      throw e;
+    });
 }
-
 
 const generateProject = new Promise<void>(async (resolve, reject) => {
   let cancelled = false;
@@ -77,7 +76,9 @@ const generateProject = new Promise<void>(async (resolve, reject) => {
 
   if (answers.setupUsingDotnetCli) {
     try {
-      await runShellCommands(dotnetCommands, targetPath)
+      for (const command of dotnetCommands) {
+        await execShellCommand(command, targetPath);
+      }
     } catch (e) {
       return reject(e);
     }
