@@ -20,7 +20,7 @@ export function transformFileContents(content: string, transforms?: Transforms):
 
 // Source:
 // https://github.com/facebook/create-react-app/blob/main/packages/react-scripts/scripts/init.js
-function renameOrOverwriteIfExistsGitignore(targetPath: string) {
+function renameAndOverwriteIfExistsGitignore(targetPath: string) {
   const gitignoreExists = fs.existsSync(path.join(targetPath, 'gitignore'));
   if (!gitignoreExists) return;
 
@@ -67,7 +67,7 @@ function generatePluginFiles(templatePath: string, targetPath: string, transform
     generatePluginFiles(originPath, destPath, transforms);
   }
 
-  renameOrOverwriteIfExistsGitignore(targetPath);
+  renameAndOverwriteIfExistsGitignore(targetPath);
 }
 
 export default generatePluginFiles;
