@@ -1,4 +1,16 @@
-import { transformFileContents, transformFileName } from "~/generatePluginFiles";
+import path from "path";
+import { vol, createFsFromVolume } from "memfs";
+import { ufs } from "unionfs";
+import generatePluginFiles, { transformFileContents, transformFileName } from "~/generatePluginFiles";
+
+jest.mock('fs', () => {
+  beforeEach(() => vol.mkdirSync(path.join(process.cwd(), '.playground'), { recursive: true }));
+  afterEach(() => vol.reset());
+
+  return ufs
+    .use(jest.requireActual('fs'))
+    .use(createFsFromVolume(vol) as any);
+});
 
 describe("transformFileName", () => {
   const transforms = { "REPLACE_ME": "replaced" };
@@ -35,5 +47,12 @@ describe("transformFileContents", () => {
     expect(result).toContain("INPUT");
 
     expect(result.split("\n").length).toBe(newlineSplits);
+  });
+});
+
+describe("generatePluginFiles", () => {
+  it("makes a new directory", () => {
+    generatePluginFiles("templates/standard-plugin", ".playground/newDir", {});
+    expect(ufs.existsSync(".playground/newDir")).toBe(true);
   });
 });
