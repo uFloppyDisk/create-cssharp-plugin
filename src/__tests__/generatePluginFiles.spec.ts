@@ -2,6 +2,8 @@ import path from "path";
 import { vol, createFsFromVolume } from "memfs";
 import { ufs } from "unionfs";
 import generatePluginFiles, { transformFileContents, transformFileName } from "~/generatePluginFiles";
+import { nestedDirectories } from "~/__fixtures__/templateMocks";
+import assert from "assert";
 
 jest.mock('fs', () => {
   beforeEach(() => vol.mkdirSync(path.join(process.cwd(), '.playground'), { recursive: true }));
@@ -51,8 +53,48 @@ describe("transformFileContents", () => {
 });
 
 describe("generatePluginFiles", () => {
-  it("makes a new directory", () => {
-    generatePluginFiles("templates/standard-plugin", ".playground/newDir", {});
+  it("makes nested directories", () => {
+    vol.fromNestedJSON({ 'fixture': nestedDirectories });
+
+    generatePluginFiles("fixture", ".playground/newDir", {});
+
     expect(ufs.existsSync(".playground/newDir")).toBe(true);
+    expect(ufs.existsSync(`.playground/newDir/${Object.keys(nestedDirectories)[0]}`)).toBe(true);
+  });
+
+  it("transforms file content", () => {
+    vol.fromNestedJSON({
+      'fixture': {
+        ...nestedDirectories,
+        'REPLACE_THIS': ufs.readFileSync("src/__fixtures__/mock.md")
+      }
+    });
+
+    generatePluginFiles("fixture", ".playground/newDir", {
+      "REPLACE_THIS": "TO_THIS"
+    });
+
+    assert(ufs.existsSync(".playground/newDir/TO_THIS"));
+
+    const file = ufs.readFileSync(".playground/newDir/TO_THIS", "utf-8")
+    expect(file).toContain("TO_THIS");
+    expect(file).not.toContain("REPLACE_THIS");
+  });
+
+  it("moves gitignore in-place", () => {
+    vol.fromNestedJSON({
+      "fixture": {
+        "gitignore": "after",
+        ".gitignore": "before",
+      }
+    });
+
+    generatePluginFiles("fixture", ".playground/newDir", {});
+
+    const dirContents = ufs.readdirSync(".playground/newDir");
+    expect(dirContents).toContain(".gitignore");
+    expect(dirContents).not.toContain("gitignore");
+
+    expect(ufs.readFileSync(".playground/newDir/.gitignore", "utf-8")).toEqual("after");
   });
 });
