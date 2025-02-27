@@ -30,14 +30,7 @@ const generateProject = new Promise(async (resolve, reject) => {
 
   console.time("Done in");
   const targetPath = path.resolve(TARGET_BASE, answers.containingDirectoryName);
-
-  const pluginName = (() => {
-    if (!answers.pluginSameName) {
-      return answers.pluginName;
-    }
-
-    return path.parse(answers.containingDirectoryName).base;
-  })();
+  const pluginName = answers.pluginName ?? path.parse(answers.containingDirectoryName).base;
 
   if (fs.existsSync(targetPath)) {
     return reject(`Path ${targetPath} already exists!`);
