@@ -88,6 +88,14 @@ export default <PromptObject[]>[
   },
   {
     type: 'toggle',
+    name: 'initGitRepo',
+    message: 'Initialize a git repo?',
+    initial: true,
+    active: 'yes',
+    inactive: 'no',
+  },
+  {
+    type: 'toggle',
     name: 'setupUsingDotnetCli',
     message: 'Setup plugin using dotnet?',
     initial: true,
