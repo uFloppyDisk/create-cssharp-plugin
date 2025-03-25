@@ -1,6 +1,10 @@
-import { validateNonEmptyString, validatePathDoesNotExist, validateStringIsNotPath } from "~/parameters";
 import { vol } from "memfs";
 import fs from "fs";
+import {
+  validateNonEmptyString,
+  validatePathDoesNotExist,
+  validateStringIsNotPath
+} from "~/validations";
 
 jest.mock("fs");
 
