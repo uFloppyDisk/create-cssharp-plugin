@@ -6,12 +6,12 @@
 #### Features
 - [x] Generates a `.sln` file with your `.csproj` already referenced<ins><sup>*</sup></ins>
 - [x] Bootstraps a `.cs` entry file with `Module(.*)` fields populated based on input
+- [x] Initializes a git repository and stages the project for you
 - [x] Comes with a complementary `.gitignore` out of the box!
 
 <ins><sup>*</sup></ins> [`dotnet`](https://learn.microsoft.com/en-us/dotnet/core/tools/) CLI must be installed
 
 #### Planned and potential features
-- [ ] `git init`
 - [ ] Unit test template
 - [ ] Opinionated project structure (directories for commands, hooks, etc.)
 - [ ] GitHub actions release workflow (build plugin and generate GH release with plugin artifacts attached)
