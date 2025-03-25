@@ -6,7 +6,7 @@ import path from "path";
 import pkg from "package.json";
 
 import prompts from "prompts";
-import parameters from "~/parameters";
+import { interactivePrompts } from "~/parameters";
 import generatePluginFiles from "~/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
 import { createSpinner, error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
@@ -53,7 +53,7 @@ const generateProject = new Promise<void>(async (resolve, reject) => {
     return false;
   }
 
-  const answers = await prompts(parameters, { onCancel });
+  const answers = await prompts(interactivePrompts, { onCancel });
   if (cancelled) {
     warn("Cancelled making a CounterStrikeSharp plugin.");
     return resolve();
