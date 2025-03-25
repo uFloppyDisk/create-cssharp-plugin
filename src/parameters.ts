@@ -89,7 +89,7 @@ export default <PromptObject[]>[
   {
     type: 'toggle',
     name: 'initGitRepo',
-    message: 'Initialize a git repo?',
+    message: 'Initialize a git repository?',
     initial: true,
     active: 'yes',
     inactive: 'no',
