@@ -22,6 +22,11 @@ const dotnetCommands = [
   'dotnet build',
 ];
 
+const gitCommands = [
+  "git init",
+  "git add .",
+];
+
 async function execShellCommand(command: string, targetPath: string) {
   const startTime = performance.now();
   const spinner = createSpinner(`Running '${command}'...`).start();
@@ -77,6 +82,16 @@ const generateProject = new Promise<void>(async (resolve, reject) => {
   if (answers.setupUsingDotnetCli) {
     try {
       for (const command of dotnetCommands) {
+        await execShellCommand(command, targetPath);
+      }
+    } catch (e) {
+      return reject(e);
+    }
+  }
+
+  if (answers.initGitRepo) {
+    try {
+      for (const command of gitCommands) {
         await execShellCommand(command, targetPath);
       }
     } catch (e) {
