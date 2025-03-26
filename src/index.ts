@@ -6,11 +6,17 @@ import path from "path";
 import pkg from "package.json";
 
 import prompts from "prompts";
-import { interactivePrompts } from "~/parameters";
+import { addCommandLineArguments, programSchema, createPrompts } from "~/parameters";
 import generatePluginFiles from "~/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
 import { createSpinner, error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
 import { promiseWithSpinner } from "./helpers";
+import { program } from "commander";
+
+program.version(pkg.version);
+addCommandLineArguments(program, programSchema);
+
+program.parse();
 
 renderMasthead();
 renderCliInfo();
@@ -53,6 +59,7 @@ const generateProject = new Promise<void>(async (resolve, reject) => {
     return false;
   }
 
+  const interactivePrompts = createPrompts(programSchema);
   const answers = await prompts(interactivePrompts, { onCancel });
   if (cancelled) {
     warn("Cancelled making a CounterStrikeSharp plugin.");

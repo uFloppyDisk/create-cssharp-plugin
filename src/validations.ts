@@ -3,7 +3,7 @@ import { existsSync } from "fs";
 import { TARGET_BASE } from "~/constants";
 
 type ValidationClosure<T> = (input: T) => boolean | string;
-type Validation<T extends string = string> = ValidationClosure<T>;
+export type Validation<T extends string = string> = ValidationClosure<T>;
 
 export function validationBuilder(validations: Validation[]): Validation {
   return (answer: string) => {

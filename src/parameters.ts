@@ -1,79 +1,186 @@
-import path from "path";
 import { PromptObject } from "prompts";
+import { program as commanderProgram } from "commander";
 import {
   validateNonEmptyString,
   validatePathDoesNotExist,
   validateStringIsNotPath,
+  Validation,
   validationBuilder
 } from "./validations";
+import { Argument, Option } from "commander";
 
-export const interactivePrompts: PromptObject[] = [
+type PromptOptions<T extends string = string> = Omit<PromptObject<T>, "name">;
+type CommandLineArgument = {
+  type: "argument";
+  name?: string;
+  factory: (obj: Argument, schema: ProgramSchema) => void;
+} | {
+  type: "option";
+  flags: Option["flags"];
+  factory?: (obj: Option, schema: ProgramSchema) => void;
+}
+type ProgramSchema = {
+  key: string;
+  description?: string;
+  validate?: Validation;
+  arg?: CommandLineArgument;
+  prompt?: <T extends string = string>() => PromptOptions<T>;
+}
+export const programSchema: ProgramSchema[] = [
   {
-    type: 'text',
-    name: 'containingDirectoryName',
-    message: 'What do you want to name the project directory?',
+    key: "containingDirectoryName",
+    description:
+      "Project name used as the project directory and plugin namespace. Accepts a path relative to current working directory.",
     validate: validationBuilder([
       validateNonEmptyString('Your project directory must have a name!'),
       validatePathDoesNotExist(`A directory with that name already exists!`),
     ]),
+    arg: {
+      type: "argument",
+      name: "projectDirectory",
+      factory(obj) {
+        obj.argOptional();
+      },
+    },
+    prompt: () => ({
+      type: 'text',
+      message: 'What do you want to name the project directory?',
+    }),
   },
   {
-    type: 'toggle',
-    name: 'pluginSameName',
-    message: 'Do you want your plugin to have the same name as your project directory?',
-    initial: true,
-    active: 'yes',
-    inactive: 'no',
+    key: "pluginSameName",
+    prompt: () => ({
+      type: 'toggle',
+      message: 'Do you want your plugin to have the same name as your project directory?',
+      initial: true,
+      active: 'yes',
+      inactive: 'no',
+    }),
   },
   {
-    type: (_, values) => values.pluginSameName === false ? 'text' : null,
-    name: 'pluginName',
-    message: 'What do you want to name your plugin?',
-    initial: (_, values) => path.parse(values.containingDirectoryName).base,
+    key: "pluginName",
+    description: "Use this option to set a different name for your plugin's namespace.",
     validate: validationBuilder([
       validateNonEmptyString('Your plugin must have a name!'),
       validateStringIsNotPath('Your plugin name cannot be a path!'),
-    ])
+    ]),
+    arg: {
+      type: "option",
+      flags: "-p, --pluginName",
+    },
+    prompt: () => ({
+      type: (_, values) => values.pluginSameName === false ? 'text' : null,
+      message: 'What do you want to name your plugin?',
+    }),
   },
   {
-    type: 'text',
-    name: 'pluginAuthor',
-    message: 'Plugin author',
-    initial: '',
+    key: "pluginAuthor",
+    prompt: () => ({
+      type: 'text',
+      message: 'Plugin author',
+      initial: '',
+    }),
   },
   {
-    type: 'text',
-    name: 'pluginDescription',
-    message: 'Plugin description',
-    initial: '',
+    key: 'pluginDescription',
+    prompt: () => ({
+      type: 'text',
+      message: 'Plugin description',
+      initial: '',
+    }),
   },
   {
-    type: 'text',
-    name: 'pluginVersion',
-    message: 'Initial version',
-    initial: '0.0.1',
+    key: 'pluginVersion',
+    prompt: () => ({
+      type: 'text',
+      message: 'Initial version',
+      initial: '0.0.1',
+    }),
   },
   {
-    type: 'toggle',
-    name: 'initGitRepo',
-    message: 'Initialize a git repository?',
-    initial: true,
-    active: 'yes',
-    inactive: 'no',
+    key: 'initGitRepo',
+    prompt: () => ({
+      type: 'toggle',
+      message: 'Initialize a git repository?',
+      initial: true,
+      active: 'yes',
+      inactive: 'no',
+    }),
   },
   {
-    type: 'toggle',
-    name: 'setupUsingDotnetCli',
-    message: 'Setup plugin using dotnet?',
-    initial: true,
-    active: 'yes',
-    inactive: 'no',
-    onRender(kleur) {
-      //@ts-ignore
-      if (this.firstRender) {
+    key: 'setupUsingDotnetCli',
+    prompt: () => ({
+      type: 'toggle',
+      message: 'Setup plugin using dotnet?',
+      initial: true,
+      active: 'yes',
+      inactive: 'no',
+      onRender(kleur) {
         //@ts-ignore
-        this.msg = `Setup plugin using dotnet? ${kleur.gray('(You must have the dotnet CLI installed and accessible via `dotnet`)')}`
+        if (this.firstRender) {
+          //@ts-ignore
+          this.msg = `Setup plugin using dotnet? ${kleur.gray('(You must have the dotnet CLI installed and accessible via `dotnet`)')}`
+        }
       }
-    }
+    }),
+  },
+  {
+    key: "interactive",
+    description: "Force interactive prompting. Options set via command-line are populated as prompt defaults.",
+    validate: validationBuilder([
+      validateNonEmptyString('Your plugin must have a name!'),
+      validateStringIsNotPath('Your plugin name cannot be a path!'),
+    ]),
+    arg: {
+      type: "option",
+      flags: "-i, --interactive",
+    },
   },
 ];
+
+export function addCommandLineArguments(
+  program: typeof commanderProgram,
+  optionsSchema: ProgramSchema[],
+): Record<string, string> {
+  const reverseLookup: Record<string, string> = {};
+
+  for (const schema of optionsSchema) {
+    if (!schema.arg) continue;
+
+    const arg = schema.arg;
+    if ("argument" === arg.type) {
+      const argument = new Argument(arg.name ?? schema.key, schema.description);
+      if (arg.factory) arg.factory(argument, schema);
+
+      program.addArgument(argument);
+      reverseLookup[argument.name()] = schema.key;
+    } else if ("option" === arg.type) {
+      const option = new Option(arg.flags, schema.description);
+      if (arg.factory) arg.factory(option, schema);
+
+      program.addOption(option);
+      reverseLookup[option.name()] = schema.key;
+    }
+  }
+
+  return reverseLookup;
+}
+
+export function createPrompts(optionsSchema: ProgramSchema[]): PromptObject[] {
+  const prompts: PromptObject[] = [];
+  for (const schema of optionsSchema) {
+    if (!schema.prompt) continue;
+
+    const prompt: PromptObject = {
+      name: schema.key,
+      message: schema.description,
+      validate: schema.validate,
+      ...schema.prompt(),
+    }
+
+
+    prompts.push(prompt);
+  }
+
+  return prompts;
+}
