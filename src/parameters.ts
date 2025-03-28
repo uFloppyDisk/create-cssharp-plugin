@@ -128,14 +128,18 @@ export const programSchema: ProgramSchema[] = [
   },
   {
     key: "interactive",
-    description: "Force interactive prompting. Options set via command-line are populated as prompt defaults.",
-    validate: validationBuilder([
-      validateNonEmptyString('Your plugin must have a name!'),
-      validateStringIsNotPath('Your plugin name cannot be a path!'),
-    ]),
+    description: "Ask prompts while skipping values set using positional arguments and flags.",
     arg: {
       type: "option",
       flags: "-i, --interactive",
+    },
+  },
+  {
+    key: "forceInteractive",
+    description: "Force ask all prompts. Options set via command-line are populated as prompt defaults.",
+    arg: {
+      type: "option",
+      flags: "-I, --forceInteractive",
     },
   },
 ];
