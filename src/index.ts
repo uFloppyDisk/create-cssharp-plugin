@@ -43,15 +43,18 @@ for (const [i, arg] of positionalArgs.entries()) {
   options[arg.key].wasSet = true;
 };
 
-if (!options["interactive"].value) {
-  prompts.override(
-    Object.fromEntries(
-      Object.entries(options)
-        .filter(o => o[1].wasSet)
-        .map(o => [o[0], o[1].value])
-    )
-  );
-}
+(() => {
+  if (options["forceInteractive"].value) return;
+
+  let preanswered = Object.entries(options);
+  if (options["interactive"].value) {
+    preanswered = preanswered.filter(o => o[1].wasSet);
+  }
+
+  preanswered = preanswered.map(o => [o[0], o[1].value]);
+
+  prompts.override(Object.fromEntries(preanswered));
+})();
 
 renderMasthead();
 renderCliInfo();
