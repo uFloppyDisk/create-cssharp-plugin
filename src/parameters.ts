@@ -144,7 +144,7 @@ export function addCommandLineArguments(
   program: typeof commanderProgram,
   optionsSchema: ProgramSchema[],
 ): Record<string, string> {
-  const reverseLookup: Record<string, string> = {};
+  const lookup: Record<string, string> = {};
 
   for (const schema of optionsSchema) {
     if (!schema.arg) continue;
@@ -155,17 +155,17 @@ export function addCommandLineArguments(
       if (arg.factory) arg.factory(argument, schema);
 
       program.addArgument(argument);
-      reverseLookup[argument.name()] = schema.key;
+      lookup[schema.key] = argument.name();
     } else if ("option" === arg.type) {
       const option = new Option(arg.flags, schema.description);
       if (arg.factory) arg.factory(option, schema);
 
       program.addOption(option);
-      reverseLookup[option.name()] = schema.key;
+      lookup[schema.key] = option.name();
     }
   }
 
-  return reverseLookup;
+  return lookup;
 }
 
 export function createPrompts(optionsSchema: ProgramSchema[]): PromptObject[] {
