@@ -54,7 +54,7 @@ export const programSchema: ProgramSchema[] = [
     initial: true,
     arg: {
       type: "option",
-      flags: "--pluginSameName",
+      flags: "--plugin-same-name",
       factory(obj) {
         obj.hidden = true;
       },
@@ -75,7 +75,7 @@ export const programSchema: ProgramSchema[] = [
     ]),
     arg: {
       type: "option",
-      flags: "-p, --pluginName <name>",
+      flags: "-p, --plugin-name <name>",
       factory(obj) {
         obj.implies({ pluginSameName: false });
       },
@@ -90,7 +90,7 @@ export const programSchema: ProgramSchema[] = [
     initial: '',
     arg: {
       type: "option",
-      flags: "-a, --pluginAuthor <name>",
+      flags: "-a, --plugin-author <name>",
     },
     prompt: () => ({
       type: 'text',
@@ -103,7 +103,7 @@ export const programSchema: ProgramSchema[] = [
     initial: false,
     arg: {
       type: "option",
-      flags: "-A, --noPluginAuthor",
+      flags: "-A, --no-plugin-author",
       factory(obj) {
         obj.implies({ pluginAuthor: '' })
       },
@@ -114,7 +114,7 @@ export const programSchema: ProgramSchema[] = [
     initial: '',
     arg: {
       type: "option",
-      flags: "-d, --pluginDescription <description>",
+      flags: "-d, --plugin-description <description>",
     },
     prompt: () => ({
       type: 'text',
@@ -127,7 +127,7 @@ export const programSchema: ProgramSchema[] = [
     initial: false,
     arg: {
       type: "option",
-      flags: "-D, --noPluginDescription",
+      flags: "-D, --no-plugin-description",
       factory(obj) {
         obj.implies({ pluginDescription: '' })
       },
@@ -139,7 +139,7 @@ export const programSchema: ProgramSchema[] = [
     initial: '0.0.1',
     arg: {
       type: "option",
-      flags: "-v, --initialVersion <version>",
+      flags: "-v, --initial-version <version>",
     },
     prompt: () => ({
       type: 'text',
@@ -151,7 +151,7 @@ export const programSchema: ProgramSchema[] = [
     initial: true,
     arg: {
       type: "option",
-      flags: "--initGitRepo",
+      flags: "--init-git-repo",
       factory(obj) {
         obj.hidden = true;
       },
@@ -168,7 +168,7 @@ export const programSchema: ProgramSchema[] = [
     initial: true,
     arg: {
       type: "option",
-      flags: "--setupUsingDotnetCli",
+      flags: "--setup-using-dotnet-cli",
       factory(obj) {
         obj.hidden = true;
       },
@@ -200,7 +200,7 @@ export const programSchema: ProgramSchema[] = [
     description: "Force ask all prompts. Options set via command-line are populated as prompt defaults.",
     arg: {
       type: "option",
-      flags: "-I, --forceInteractive",
+      flags: "-I, --force-interactive",
     },
   },
   {
@@ -208,7 +208,7 @@ export const programSchema: ProgramSchema[] = [
     description: "Skip prompts to run initial setup tasks.",
     arg: {
       type: "option",
-      flags: "-y, --runTasks",
+      flags: "-y, --run-tasks",
       factory(obj) {
         obj.implies({
           setupUsingDotnetCli: true,
@@ -240,7 +240,7 @@ export function addCommandLineArguments(
       if (arg.factory) arg.factory(option, schema);
 
       program.addOption(option);
-      lookup[schema.key] = option.name();
+      lookup[schema.key] = option.attributeName();
     }
   }
 
