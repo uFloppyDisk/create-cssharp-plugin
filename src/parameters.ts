@@ -22,6 +22,7 @@ type CommandLineArgument = {
 type ProgramSchema = {
   key: string;
   description?: string;
+  initial?: PromptObject["initial"];
   validate?: Validation;
   arg?: CommandLineArgument;
   prompt?: <T extends string = string>() => PromptOptions<T>;
@@ -49,10 +50,10 @@ export const programSchema: ProgramSchema[] = [
   },
   {
     key: "pluginSameName",
+    initial: true,
     prompt: () => ({
       type: 'toggle',
       message: 'Do you want your plugin to have the same name as your project directory?',
-      initial: true,
       active: 'yes',
       inactive: 'no',
     }),
@@ -75,44 +76,44 @@ export const programSchema: ProgramSchema[] = [
   },
   {
     key: "pluginAuthor",
+    initial: '',
     prompt: () => ({
       type: 'text',
       message: 'Plugin author',
-      initial: '',
     }),
   },
   {
     key: 'pluginDescription',
+    initial: '',
     prompt: () => ({
       type: 'text',
       message: 'Plugin description',
-      initial: '',
     }),
   },
   {
     key: 'pluginVersion',
+    initial: '0.0.1',
     prompt: () => ({
       type: 'text',
       message: 'Initial version',
-      initial: '0.0.1',
     }),
   },
   {
     key: 'initGitRepo',
+    initial: true,
     prompt: () => ({
       type: 'toggle',
       message: 'Initialize a git repository?',
-      initial: true,
       active: 'yes',
       inactive: 'no',
     }),
   },
   {
     key: 'setupUsingDotnetCli',
+    initial: true,
     prompt: () => ({
       type: 'toggle',
       message: 'Setup plugin using dotnet?',
-      initial: true,
       active: 'yes',
       inactive: 'no',
       onRender(kleur) {
@@ -127,6 +128,7 @@ export const programSchema: ProgramSchema[] = [
   {
     key: "interactive",
     description: "Force interactive prompting. Options set via command-line are populated as prompt defaults.",
+    initial: true,
     validate: validationBuilder([
       validateNonEmptyString('Your plugin must have a name!'),
       validateStringIsNotPath('Your plugin name cannot be a path!'),
@@ -173,6 +175,7 @@ export function createPrompts(optionsSchema: ProgramSchema[]): PromptObject[] {
 
     const prompt: PromptObject = {
       name: schema.key,
+      initial: schema.initial ?? undefined,
       message: schema.description,
       validate: schema.validate,
       ...schema.prompt(),
