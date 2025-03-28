@@ -14,9 +14,20 @@ import { promiseWithSpinner } from "./helpers";
 import { program } from "commander";
 
 program.version(pkg.version);
-addCommandLineArguments(program, programSchema);
+const lookup = addCommandLineArguments(program, programSchema);
 
-program.parse();
+const parsedOpts = program.parse().opts();
+const options = programSchema.reduce<Record<string, unknown>>((acc, s) => {
+  acc[s.key] = parsedOpts?.[lookup[s.key]] ?? (s.initial ?? null);
+  return acc;
+}, {});
+
+const positionalArgs = programSchema.filter(s => s.arg && s.arg.type === "argument");
+for (const [i, arg] of positionalArgs.entries()) {
+  if (!program.args[i]) continue;
+
+  options[arg.key] = program.args[i];
+};
 
 renderMasthead();
 renderCliInfo();
