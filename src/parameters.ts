@@ -66,7 +66,7 @@ export const programSchema: ProgramSchema[] = [
     ]),
     arg: {
       type: "option",
-      flags: "-p, --pluginName",
+      flags: "-p, --pluginName <name>",
     },
     prompt: () => ({
       type: (_, values) => values.pluginSameName === false ? 'text' : null,
