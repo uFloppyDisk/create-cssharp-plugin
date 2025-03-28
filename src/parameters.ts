@@ -52,6 +52,13 @@ export const programSchema: ProgramSchema[] = [
   {
     key: "pluginSameName",
     initial: true,
+    arg: {
+      type: "option",
+      flags: "--pluginSameName",
+      factory(obj) {
+        obj.hidden = true;
+      },
+    },
     prompt: () => ({
       type: 'toggle',
       message: 'Do you want your plugin to have the same name as your project directory?',
@@ -69,6 +76,9 @@ export const programSchema: ProgramSchema[] = [
     arg: {
       type: "option",
       flags: "-p, --pluginName <name>",
+      factory(obj) {
+        obj.implies({ pluginSameName: false });
+      },
     },
     prompt: () => ({
       type: (_, values) => values.pluginSameName === false ? 'text' : null,

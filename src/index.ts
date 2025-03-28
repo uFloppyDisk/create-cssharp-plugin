@@ -22,7 +22,7 @@ const options = programSchema.reduce<Record<string, ProgramOption>>((acc, s) => 
   const opt = parsedOpts?.[lookup[s.key]];
   acc[s.key] = {
     value: opt ?? (s.initial ?? null),
-    wasSet: !!opt,
+    wasSet: opt != null,
   }
 
   return acc;
