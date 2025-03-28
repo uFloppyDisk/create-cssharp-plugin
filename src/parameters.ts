@@ -88,22 +88,59 @@ export const programSchema: ProgramSchema[] = [
   {
     key: "pluginAuthor",
     initial: '',
+    arg: {
+      type: "option",
+      flags: "-a, --pluginAuthor <name>",
+    },
     prompt: () => ({
       type: 'text',
       message: 'Plugin author',
     }),
   },
   {
+    key: "noPluginAuthor",
+    description: "Skip prompting for plugin author.",
+    initial: false,
+    arg: {
+      type: "option",
+      flags: "-A, --noPluginAuthor",
+      factory(obj) {
+        obj.implies({ pluginAuthor: '' })
+      },
+    },
+  },
+  {
     key: 'pluginDescription',
     initial: '',
+    arg: {
+      type: "option",
+      flags: "-d, --pluginDescription <description>",
+    },
     prompt: () => ({
       type: 'text',
       message: 'Plugin description',
     }),
   },
   {
+    key: "noPluginAuthor",
+    description: "Skip prompting for plugin description.",
+    initial: false,
+    arg: {
+      type: "option",
+      flags: "-D, --noPluginDescription",
+      factory(obj) {
+        obj.implies({ pluginDescription: '' })
+      },
+    },
+  },
+  {
     key: 'pluginVersion',
+    description: "Defaults to '0.0.1'",
     initial: '0.0.1',
+    arg: {
+      type: "option",
+      flags: "-v, --initialVersion <version>",
+    },
     prompt: () => ({
       type: 'text',
       message: 'Initial version',
