@@ -149,6 +149,13 @@ export const programSchema: ProgramSchema[] = [
   {
     key: 'initGitRepo',
     initial: true,
+    arg: {
+      type: "option",
+      flags: "--initGitRepo",
+      factory(obj) {
+        obj.hidden = true;
+      },
+    },
     prompt: () => ({
       type: 'toggle',
       message: 'Initialize a git repository?',
@@ -159,6 +166,13 @@ export const programSchema: ProgramSchema[] = [
   {
     key: 'setupUsingDotnetCli',
     initial: true,
+    arg: {
+      type: "option",
+      flags: "--setupUsingDotnetCli",
+      factory(obj) {
+        obj.hidden = true;
+      },
+    },
     prompt: () => ({
       type: 'toggle',
       message: 'Setup plugin using dotnet?',
@@ -187,6 +201,20 @@ export const programSchema: ProgramSchema[] = [
     arg: {
       type: "option",
       flags: "-I, --forceInteractive",
+    },
+  },
+  {
+    key: "runAllDefaultTasks",
+    description: "Skip prompts to run initial setup tasks.",
+    arg: {
+      type: "option",
+      flags: "-y, --runTasks",
+      factory(obj) {
+        obj.implies({
+          setupUsingDotnetCli: true,
+          initGitRepo: true,
+        });
+      },
     },
   },
 ];
