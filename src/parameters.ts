@@ -168,14 +168,14 @@ export function addCommandLineArguments(
   return lookup;
 }
 
-export function createPrompts(optionsSchema: ProgramSchema[]): PromptObject[] {
+export function createPrompts(optionsSchema: ProgramSchema[], options: Record<string, any>): PromptObject[] {
   const prompts: PromptObject[] = [];
   for (const schema of optionsSchema) {
     if (!schema.prompt) continue;
 
     const prompt: PromptObject = {
       name: schema.key,
-      initial: schema.initial ?? undefined,
+      initial: options[schema.key] ?? (schema.initial ?? undefined),
       message: schema.description,
       validate: schema.validate,
       ...schema.prompt(),

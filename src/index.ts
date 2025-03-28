@@ -70,7 +70,7 @@ const generateProject = new Promise<void>(async (resolve, reject) => {
     return false;
   }
 
-  const interactivePrompts = createPrompts(programSchema);
+  const interactivePrompts = createPrompts(programSchema, options);
   const answers = await prompts(interactivePrompts, { onCancel });
   if (cancelled) {
     warn("Cancelled making a CounterStrikeSharp plugin.");
