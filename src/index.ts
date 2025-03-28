@@ -6,7 +6,7 @@ import path from "path";
 import pkg from "package.json";
 
 import prompts from "prompts";
-import { addCommandLineArguments, programSchema, createPrompts } from "~/parameters";
+import { addCommandLineArguments, programSchema, createPrompts, ProgramOption } from "~/parameters";
 import generatePluginFiles from "~/generatePluginFiles";
 import { IS_PRODUCTION, TARGET_BASE, TEMPLATE_BASE } from "~/constants";
 import { createSpinner, error, renderCliInfo, renderGoodbye, renderMasthead, warn } from "~/vanity";
@@ -17,8 +17,14 @@ program.version(pkg.version);
 const lookup = addCommandLineArguments(program, programSchema);
 
 const parsedOpts = program.parse().opts();
-const options = programSchema.reduce<Record<string, unknown>>((acc, s) => {
-  acc[s.key] = parsedOpts?.[lookup[s.key]] ?? (s.initial ?? null);
+
+const options = programSchema.reduce<Record<string, ProgramOption>>((acc, s) => {
+  const opt = parsedOpts?.[lookup[s.key]];
+  acc[s.key] = {
+    value: opt ?? (s.initial ?? null),
+    wasSet: !!opt,
+  }
+
   return acc;
 }, {});
 
@@ -26,8 +32,19 @@ const positionalArgs = programSchema.filter(s => s.arg && s.arg.type === "argume
 for (const [i, arg] of positionalArgs.entries()) {
   if (!program.args[i]) continue;
 
-  options[arg.key] = program.args[i];
+  options[arg.key].value = program.args[i];
+  options[arg.key].wasSet = true;
 };
+
+if (!options["interactive"].value) {
+  prompts.override(
+    Object.fromEntries(
+      Object.entries(options)
+        .filter(o => o[1].wasSet)
+        .map(o => [o[0], o[1].value])
+    )
+  );
+}
 
 renderMasthead();
 renderCliInfo();
