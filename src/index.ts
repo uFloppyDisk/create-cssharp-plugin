@@ -32,13 +32,6 @@ const positionalArgs = programSchema.filter(s => s.arg && s.arg.type === "argume
 for (const [i, arg] of positionalArgs.entries()) {
   if (!program.args[i]) continue;
 
-  const passed = !!arg.validate ? arg.validate(program.args[i]) : true;
-  if (typeof passed === "string") {
-    program.error(`${passed}: ${program.args[i]}`);
-  } else if (passed === false) {
-    program.help();
-  }
-
   options[arg.key].value = program.args[i];
   options[arg.key].wasSet = true;
 };
