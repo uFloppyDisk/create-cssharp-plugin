@@ -9,6 +9,7 @@ import {
 } from "./validations";
 import { Argument, Option } from "commander";
 
+export type ProgramOption<T = any> = { value: T, wasSet: boolean };
 type PromptOptions<T extends string = string> = Omit<PromptObject<T>, "name">;
 type CommandLineArgument = {
   type: "argument";
@@ -128,7 +129,6 @@ export const programSchema: ProgramSchema[] = [
   {
     key: "interactive",
     description: "Force interactive prompting. Options set via command-line are populated as prompt defaults.",
-    initial: true,
     validate: validationBuilder([
       validateNonEmptyString('Your plugin must have a name!'),
       validateStringIsNotPath('Your plugin name cannot be a path!'),
@@ -168,19 +168,18 @@ export function addCommandLineArguments(
   return lookup;
 }
 
-export function createPrompts(optionsSchema: ProgramSchema[], options: Record<string, any>): PromptObject[] {
+export function createPrompts(optionsSchema: ProgramSchema[], options: Record<string, ProgramOption>): PromptObject[] {
   const prompts: PromptObject[] = [];
   for (const schema of optionsSchema) {
     if (!schema.prompt) continue;
 
     const prompt: PromptObject = {
       name: schema.key,
-      initial: options[schema.key] ?? (schema.initial ?? undefined),
+      initial: options[schema.key].value ?? (schema.initial ?? undefined),
       message: schema.description,
       validate: schema.validate,
       ...schema.prompt(),
     }
-
 
     prompts.push(prompt);
   }
