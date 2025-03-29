@@ -223,17 +223,6 @@ export function addCommandLineArguments(
   program: typeof commanderProgram,
   optionsSchema: ProgramSchema[],
 ): Record<string, string> {
-  function validateValue(value: string, validateFn: Validation) {
-    const passedOrError = validateFn(value);
-    if (typeof passedOrError === "string") {
-      program.error(`${passedOrError}: ${value}`);
-    }
-
-    if (passedOrError === false) {
-      program.help();
-    }
-  }
-
   const lookup: Record<string, string> = {};
 
   for (const schema of optionsSchema) {
@@ -252,7 +241,15 @@ export function addCommandLineArguments(
 
     if (!!schema.validate)
       argOrOption.argParser((value) => {
-        validateValue(value, schema.validate!);
+        const passedOrError = schema.validate!(value);
+        if (typeof passedOrError === "string") {
+          program.error(`${passedOrError}: ${value}`);
+        }
+
+        if (passedOrError === false) {
+          program.help();
+        }
+
         return value;
       });
 
