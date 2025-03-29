@@ -205,10 +205,10 @@ export const programSchema: ProgramSchema[] = [
   },
   {
     key: "runAllDefaultTasks",
-    description: "Skip prompts to run initial setup tasks.",
+    description: "Skip all initial setup task prompts and run them. Ex. `git init`",
     arg: {
       type: "option",
-      flags: "-y, --run-tasks",
+      flags: "-y, --run-all-tasks",
       factory(obj) {
         obj.implies({
           setupUsingDotnetCli: true,
