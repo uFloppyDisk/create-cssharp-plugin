@@ -239,28 +239,32 @@ export function addCommandLineArguments(
   for (const schema of optionsSchema) {
     if (!schema.arg) continue;
 
-    const arg = schema.arg;
-    if ("argument" === arg.type) {
-      const argument = new Argument(arg.name ?? schema.key, schema.description);
-      if (!!schema.validate)
-        argument.argParser((value) => {
-          validateValue(value, schema.validate!);
-          return value;
-        });
+    const argDef = schema.arg;
+    const argOrOption = (() => {
+      if (argDef.type === "argument")
+        return new Argument(argDef.name ?? schema.key, schema.description);
 
-      if (arg.factory) arg.factory(argument, schema);
+      if (argDef.type === "option")
+        return new Option(argDef.flags, schema.description);
+    })();
+
+    if (!argOrOption) continue;
+
+    if (!!schema.validate)
+      argOrOption.argParser((value) => {
+        validateValue(value, schema.validate!);
+        return value;
+      });
+
+    if (argDef.type === "argument") {
+      const argument = argOrOption as Argument;
+      if (argDef.factory) argDef.factory(argument, schema);
 
       program.addArgument(argument);
       lookup[schema.key] = argument.name();
-    } else if ("option" === arg.type) {
-      const option = new Option(arg.flags, schema.description);
-      if (!!schema.validate)
-        option.argParser((value) => {
-          validateValue(value, schema.validate!);
-          return value;
-        });
-
-      if (arg.factory) arg.factory(option, schema);
+    } else if (argDef.type === "option") {
+      const option = argOrOption as Option;
+      if (argDef.factory) argDef.factory(option, schema);
 
       program.addOption(option);
       lookup[schema.key] = option.attributeName();
