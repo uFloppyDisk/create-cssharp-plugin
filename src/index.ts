@@ -40,8 +40,12 @@ for (const [i, arg] of positionalArgs.entries()) {
   if (options["forceInteractive"].value) return;
 
   let preanswered = Object.entries(options);
+
+  const wereSet = preanswered.filter(o => o[1].wasSet);
+  if (wereSet.length <= 0) return;
+
   if (options["interactive"].value) {
-    preanswered = preanswered.filter(o => o[1].wasSet);
+    preanswered = wereSet;
   }
 
   preanswered = preanswered.map(o => [o[0], o[1].value]);
