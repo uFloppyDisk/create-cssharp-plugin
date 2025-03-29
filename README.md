@@ -77,8 +77,53 @@ Run on-demand via pnpm:
 
 ## Usage
 
-Follow the prompts to generate your CounterStrike Sharp plugin!
+#### Interactive prompts
+Create your CounterStrikeSharp plugin project using interactive step-by-step prompts in
+your terminal.
 
+Run `create-cssharp-plugin` with no arguments to enter interactive mode and follow 
+the prompts.\
+ex. `npx create-cssharp-plugin`
+
+#### Command-line arguments
+Generate your CounterStrikeSharp plugin project directly from the command line.
+
+<details open>
+    <summary>Generate a project named "example"</summary>
+
+`create-cssharp-plugin example`
+</details>
+
+<details>
+    <summary>Generate a project with a different plugin name(space).</summary>
+
+`create-cssharp-plugin -p differentName example`
+</details>
+
+<details>
+    <summary>Generate a project with an author and description</summary>
+
+`create-cssharp-plugin -a JohnCSSharp -d "It's CSSharping time" example`
+</details>
+
+> [!NOTE]
+> If you specify a project directory as the first positional argument when running 
+`create-cssharp-plugin`, all interactive prompts will be skipped and defaults will apply.
+
+<details>
+    <summary>Enter interactive mode after passing arguments</summary>
+
+Show prompts and skip those set via arguments:\
+`create-cssharp-plugin -i example`
+
+Forcibly show all prompts with initial values populated from arguments:\
+`create-cssharp-plugin -I example`
+</details>
+
+> [!NOTE]
+> View CLI usage help by passing `-h` or `--help`
+
+## Project Structure
 Projects generated using `create-cssharp-plugin` have the following structure:
 ```
 ./projectName
