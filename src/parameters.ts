@@ -147,23 +147,6 @@ export const programSchema: ProgramSchema[] = [
     }),
   },
   {
-    key: 'initGitRepo',
-    initial: true,
-    arg: {
-      type: "option",
-      flags: "--init-git-repo",
-      factory(obj) {
-        obj.hidden = true;
-      },
-    },
-    prompt: () => ({
-      type: 'toggle',
-      message: 'Initialize a git repository?',
-      active: 'yes',
-      inactive: 'no',
-    }),
-  },
-  {
     key: 'setupUsingDotnetCli',
     initial: true,
     arg: {
@@ -185,6 +168,23 @@ export const programSchema: ProgramSchema[] = [
           this.msg = `Setup plugin using dotnet? ${kleur.gray('(You must have the dotnet CLI installed and accessible via `dotnet`)')}`
         }
       }
+    }),
+  },
+  {
+    key: 'initGitRepo',
+    initial: true,
+    arg: {
+      type: "option",
+      flags: "--init-git-repo",
+      factory(obj) {
+        obj.hidden = true;
+      },
+    },
+    prompt: () => ({
+      type: 'toggle',
+      message: 'Initialize a git repository?',
+      active: 'yes',
+      inactive: 'no',
     }),
   },
   {
