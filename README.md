@@ -88,6 +88,9 @@ ex. `npx create-cssharp-plugin`
 #### Command-line arguments
 Generate your CounterStrikeSharp plugin project directly from the command line.
 
+> [!TIP]
+> View CLI options and usage help by passing `-h` or `--help`
+
 <details open>
     <summary>Generate a project named "example"</summary>
 
@@ -119,9 +122,6 @@ Show prompts and skip those set via arguments:\
 Forcibly show all prompts with initial values populated from arguments:\
 `create-cssharp-plugin -I example`
 </details>
-
-> [!NOTE]
-> View CLI usage help by passing `-h` or `--help`
 
 ## Project Structure
 Projects generated using `create-cssharp-plugin` have the following structure:
