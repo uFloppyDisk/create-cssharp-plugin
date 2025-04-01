@@ -123,6 +123,15 @@ Forcibly show all prompts with initial values populated from arguments:\
 `create-cssharp-plugin -I example`
 </details>
 
+<details>
+    <summary>More CLI option recipes</summary>
+
+Say yes to all default build tasks (ex. git init) and ask remaining prompts interactively:\
+`create-cssharp-plugin -yi example`\
+`create-cssharp-plugin -yip differentName example`
+
+</details>
+
 ## Project Structure
 Projects generated using `create-cssharp-plugin` have the following structure:
 ```
