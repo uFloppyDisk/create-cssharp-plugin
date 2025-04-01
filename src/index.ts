@@ -23,6 +23,7 @@ const options = programSchema.reduce<Record<string, ProgramOption>>((acc, s) => 
   acc[s.key] = {
     value: opt ?? (s.initial ?? null),
     wasSet: opt != null,
+    requiredToSkip: s.arg?.type === "argument" ? true : undefined,
   }
 
   return acc;
@@ -41,15 +42,14 @@ for (const [i, arg] of positionalArgs.entries()) {
 
   let preanswered = Object.entries(options);
 
-  const wereSet = preanswered.filter(o => o[1].wasSet);
-  if (wereSet.length <= 0) return;
+  const allRequiredSet = preanswered
+    .every(([_, o]) => !o.requiredToSkip || (o.requiredToSkip && o.wasSet));
 
-  if (options["interactive"].value) {
-    preanswered = wereSet;
+  if (!allRequiredSet || options["interactive"].value) {
+    preanswered = preanswered.filter(([_, o]) => o.wasSet);
   }
 
-  preanswered = preanswered.map(o => [o[0], o[1].value]);
-
+  preanswered = preanswered.map(([k, o]) => [k, o.value]);
   prompts.override(Object.fromEntries(preanswered));
 })();
 

@@ -9,7 +9,7 @@ import {
 } from "./validations";
 import { Argument, Option } from "commander";
 
-export type ProgramOption<T = any> = { value: T, wasSet: boolean };
+export type ProgramOption<T = any> = { value: T, wasSet: boolean, requiredToSkip?: boolean };
 type PromptOptions<T extends string = string> = Omit<PromptObject<T>, "name">;
 type CommandLineArgument = {
   type: "argument";
