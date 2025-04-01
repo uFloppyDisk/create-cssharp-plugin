@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.4.0](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.3.1...v0.4.0) (2025-04-01)
+
+
+### Features
+
+* add author/description/initialVersion flags; ([0e632e0](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/0e632e0923826189bc009b13ce95697937b66320))
+* add forced/preanswered interactive mode flags; ([ed16060](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/ed160604a42c143b56377d68999624b5b6b7b1fc))
+* add git init step; ([bca2a50](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/bca2a503209826abfda1d558509de5e83143168d))
+* allow skip prompts for setup tasks with flag; ([0c21829](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/0c2182935cf952c55db7d54e45cd3afb53b0ebf0))
+* ingest cli args and options; ([375ac73](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/375ac739e397f21b0187dea54cbe31d19fa8a831))
+* merge cli args into prompt initial values; ([9f71787](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/9f71787ad834d3354b0c2bb516ca1100c1a521b6))
+* override prompts with cli args; ([32a21e5](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/32a21e54d1a41207cafcc072407aa84ec1c52e1b))
+* validate args and options; ([9af1002](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/9af1002b1b4eb68199128f773706b32ab1ebecb7))
+
+
+### Bug Fixes
+
+* **cli:** accept string for pluginName flag; ([1f6b824](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/1f6b824a2673e1e741d04d8ee56c8229ffb30d3d))
+* **cli:** skip prompts only when required args are set; ([abc9691](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/abc96914830a4908e1950b7b54246e1f67c4adf6))
+* pluginName option implies pluginSameName is false; ([1e7cc71](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/1e7cc71fcebe1abb6c5c5885b6752ce00ce895d9))
+* prompt preanswer regression when no args passed; ([5a8b508](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/5a8b50889f0b9c80737fa8de52e17319a4ae457f))
+* validate positional arguments; ([4eaad64](https://github.com/uFloppyDisk/create-cssharp-plugin/commit/4eaad648bec6d676be18187870541fdccffef299))
+
 ## [0.3.1](https://github.com/uFloppyDisk/create-cssharp-plugin/compare/v0.3.0...v0.3.1) (2025-02-25)
 
 
